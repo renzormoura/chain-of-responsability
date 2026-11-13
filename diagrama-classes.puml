@@ -1,0 +1,33 @@
+@startuml
+title Padrão Chain of Responsability - Suporte técnico
+skinparam classAttributeIconSize 0
+abstract class Suporte {
+  #chamadosAtendidos: List<TipoChamado>
+  -proximoNivel: Suporte
+  +setProximoNivel(s: Suporte): void
+  +{abstract} getDescricaoNivel(): String
+  +resolverChamado(chamado: Chamado): String
+}
+class SuporteAtendente
+class SuporteTecnico
+class SuporteEngenheiro
+class Chamado {
+  -tipoChamado: TipoChamado
+  +getTipoChamado(): TipoChamado
+}
+interface TipoChamado
+class TipoChamadoSenha <<singleton>>
+class TipoChamadoHardware <<singleton>>
+class TipoChamadoRede <<singleton>>
+class TipoChamadoJuridico <<singleton>>
+Suporte <|-- SuporteAtendente
+Suporte <|-- SuporteTecnico
+Suporte <|-- SuporteEngenheiro
+Suporte --> Suporte : proximoNivel
+Suporte ..> Chamado
+Chamado --> TipoChamado
+TipoChamado <|.. TipoChamadoSenha
+TipoChamado <|.. TipoChamadoHardware
+TipoChamado <|.. TipoChamadoRede
+TipoChamado <|.. TipoChamadoJuridico
+@enduml
